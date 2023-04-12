@@ -8,5 +8,9 @@ RUN mkdir -p /usr/local/bin && \
 	"https://github.com/bazelbuild/bazelisk/releases/download/${BAZELISK_VERSION}/bazelisk-${TARGETOS}-${TARGETARCH}" && \
 	echo "${BAZELISK_SHA256} /usr/local/bin/bazelisk" | sha256sum -c && \
 	chmod +x /usr/local/bin/bazelisk && \
-	ln -s /usr/local/bin/bazelisk /usr/local/bin/bazel
-
+	ln -s /usr/local/bin/bazelisk /usr/local/bin/bazel && \
+	dnf install -y \
+	git \
+	diffutils \
+	&& \
+	dnf clean all

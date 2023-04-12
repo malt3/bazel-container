@@ -13,4 +13,14 @@ RUN mkdir -p /usr/local/bin && \
 	git \
 	diffutils \
 	&& \
-	dnf clean all
+	dnf clean all && \
+	groupadd --gid 1000 builder && \
+	useradd -rm -d /home/builder -s /bin/bash -g root -u 1000 --gid builder builder && \
+	mkdir -p /home/builder/.cache && \
+	mkdir -p /workspace && \
+	chown -R builder:builder /home/builder/.cache /workspace && \
+	git config --global --add safe.directory /workspace
+USER builder
+WORKDIR /workspace
+ENTRYPOINT [ "/usr/local/bin/bazel" ]
+RUN git config --global --add safe.directory /workspace

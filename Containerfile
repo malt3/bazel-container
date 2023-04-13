@@ -2,6 +2,7 @@ FROM fedora:37
 ARG TARGETOS
 ARG TARGETARCH
 ARG BAZELISK_VERSION=v1.16.0
+ARG BAZEL_VERSION=6.1.0
 ARG BAZELISK_SHA256=168851e70cf5f95c0e215e7f3aaca5132ffc3c8dd8f585a4157b0be2b53cfe32
 RUN mkdir -p /usr/local/bin && \
 	curl -fsSLo /usr/local/bin/bazelisk \
@@ -23,4 +24,5 @@ RUN mkdir -p /usr/local/bin && \
 USER builder
 WORKDIR /workspace
 ENTRYPOINT [ "/usr/local/bin/bazel" ]
-RUN git config --global --add safe.directory /workspace
+RUN git config --global --add safe.directory /workspace && \
+	USE_BAZEL_VERSION=${BAZEL_VERSION} bazel version
